@@ -3,6 +3,7 @@ var path = require('path');
 var tmpdir = require('os').tmpdir();
 var fs = require('graceful-fs');
 var uuid = require('uuid');
+var mkdirp = require('mkdirp');
 
 function tempfile(filename) {
 	return path.join(tmpdir, uuid.v4(), (filename || ''));
@@ -17,7 +18,7 @@ module.exports = function (str, filename, cb) {
 
 	var filepath = tempfile(filename);
 
-	fs.mkdir(path.dirname(filepath), function (err) {
+	mkdirp(path.dirname(filepath), function (err) {
 		if (err && err.code !== 'EEXIST') {
 			return cb(err);
 		}
